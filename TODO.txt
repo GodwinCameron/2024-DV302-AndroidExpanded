@@ -1,0 +1,6 @@
+1. Planning - app identity, wireframes and icon
+1.1 quiz and video lecture
+2. Milestone, frontend implentation
+
+
+(do not overthink/overcomplicate the breif - manage expectations)
