@@ -110,6 +110,11 @@ fun ChatScreen(
 //
 //            Message(text = "Well then here is a new message.")
 
+            Message(text="Hi there!")
+            Reply(text="Hi!")
+            Message(text="hi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi again!hi again!hi again!hi again!hi again!hi again!hi again!")
+            Reply(text="dsfklsdjsdkfsdkfsdfsdfhsdjhfshfhsjdfhsjdhfjsdhfdjshfsjhfjsdfhdsjfhsdfhjsdhfjhfjshfjsdhfdhfjshfhjsdhfjdshfjdshfdjshfsdjh")
+
 
 
 
@@ -143,9 +148,8 @@ fun ChatScreen(
                     ){
                         PageBlock(text = "On My Way!")
                         PageBlock(text = "Can't Make it")
-                        PageBlock(text = "Have someone fill in for me")
-                        PageBlock(text = "Test test Test!")
-                        PageBlock(text = "On My Way!")
+                        PageBlock(text = "New page")
+
 
                     } // End of Page Response Container
                 }
@@ -206,6 +210,8 @@ fun Message(
     )
 
     Row( // Message
+        verticalAlignment = Alignment.Bottom,
+        horizontalArrangement = Arrangement.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

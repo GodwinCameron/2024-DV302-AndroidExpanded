@@ -81,6 +81,96 @@ fun AllChatsScreen(
                 .height(600.dp)
                 .padding(20.dp) // Styling
         ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+            ){
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .background(color = Color.White, shape = RoundedCornerShape(50))
+
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(45.dp)
+                            .background(color = Background2, shape = RoundedCornerShape(50))
+                    )
+                }
+                Spacer(modifier = Modifier.width(15.dp))
+                Text("Last chat message", color = Color.White)
+            }
+
+            Spacer(modifier = modifier.height(15.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+            ){
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .background(color = Color.White, shape = RoundedCornerShape(50))
+
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(45.dp)
+                            .background(color = Background2, shape = RoundedCornerShape(50))
+                    )
+                }
+                Spacer(modifier = Modifier.width(15.dp))
+                Text("Last chat message", color = Color.White)
+            }
+
+            Spacer(modifier = modifier.height(15.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+            ){
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .background(color = Color.White, shape = RoundedCornerShape(50))
+
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(45.dp)
+                            .background(color = Background2, shape = RoundedCornerShape(50))
+                    )
+                }
+                Spacer(modifier = Modifier.width(15.dp))
+                Text("Last chat message", color = Color.White)
+            }
+
+            Spacer(modifier = modifier.height(15.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = modifier
+            ){
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .background(color = Color.White, shape = RoundedCornerShape(50))
+
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(45.dp)
+                            .background(color = Background2, shape = RoundedCornerShape(50))
+                    )
+                }
+                Spacer(modifier = Modifier.width(15.dp))
+                Text("Last chat message", color = Color.White)
+            }
+
         } // End of User Chats Area
 
     } // End of Parent Div
