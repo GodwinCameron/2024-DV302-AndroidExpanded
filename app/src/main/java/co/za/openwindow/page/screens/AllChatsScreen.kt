@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,11 +34,18 @@ import co.za.openwindow.page.ui.theme.Background4
 import co.za.openwindow.page.ui.theme.DarkGrayText
 import co.za.openwindow.page.ui.theme.DarkText
 import co.za.openwindow.page.ui.theme.PageTheme
+import co.za.openwindow.page.viewmodels.ChatViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import co.za.openwindow.page.models.Chat
 
 @Composable
 fun AllChatsScreen(
+    viewModel: ChatViewModel = viewModel(),
+    navigateToChat:() -> Unit = {},
     modifier: Modifier = Modifier
 ){
+
+    val chats:List<Chat> = viewModel.chatList
 
 
     val logo = painterResource(R.drawable.logo)
@@ -68,8 +78,6 @@ fun AllChatsScreen(
                     Spacer(modifier = Modifier.width(16.dp))
                     ProfileIcon()
                     ProfileIcon()
-                    ProfileIcon()
-                    ProfileIcon()
                 }
             }
         } // End of Top
@@ -81,6 +89,37 @@ fun AllChatsScreen(
                 .height(600.dp)
                 .padding(20.dp) // Styling
         ) {
+            LazyColumn(
+                modifier = modifier.padding(10.dp)
+            ) {
+                items(chats){
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = modifier
+                    ){
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(50.dp)
+                                .background(color = Color.White, shape = RoundedCornerShape(50))
+
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(45.dp)
+                                    .background(color = Background2, shape = RoundedCornerShape(50))
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(15.dp))
+                        Text("Last chat message", color = Color.White)
+                        Button(onClick = { navigateToChat.invoke() }) {
+                            Text("To chat")
+                        }
+                    }
+                    Spacer(modifier = modifier.height(15.dp))
+                }
+            }
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = modifier
@@ -100,6 +139,9 @@ fun AllChatsScreen(
                 }
                 Spacer(modifier = Modifier.width(15.dp))
                 Text("Last chat message", color = Color.White)
+                Button(onClick = { navigateToChat.invoke()  }) {
+                    Text("To chat")
+                }
             }
 
             Spacer(modifier = modifier.height(15.dp))
@@ -123,52 +165,9 @@ fun AllChatsScreen(
                 }
                 Spacer(modifier = Modifier.width(15.dp))
                 Text("Last chat message", color = Color.White)
-            }
-
-            Spacer(modifier = modifier.height(15.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier
-            ){
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(50))
-
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(45.dp)
-                            .background(color = Background2, shape = RoundedCornerShape(50))
-                    )
+                Button(onClick = { navigateToChat.invoke()  }) {
+                    Text("To chat")
                 }
-                Spacer(modifier = Modifier.width(15.dp))
-                Text("Last chat message", color = Color.White)
-            }
-
-            Spacer(modifier = modifier.height(15.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier
-            ){
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(50))
-
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(45.dp)
-                            .background(color = Background2, shape = RoundedCornerShape(50))
-                    )
-                }
-                Spacer(modifier = Modifier.width(15.dp))
-                Text("Last chat message", color = Color.White)
             }
 
         } // End of User Chats Area

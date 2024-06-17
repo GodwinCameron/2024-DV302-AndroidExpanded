@@ -31,6 +31,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,24 +45,28 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.za.openwindow.page.R
 import co.za.openwindow.page.ui.theme.Background1
 import co.za.openwindow.page.ui.theme.Background2
 import co.za.openwindow.page.ui.theme.Background3
 import co.za.openwindow.page.ui.theme.MessageTextColor
 import co.za.openwindow.page.ui.theme.PageTheme
+import co.za.openwindow.page.viewmodels.LoginViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
+    viewModel: LoginViewModel = viewModel(),
     navigateToRegister:() -> Unit = {},
+    navigateToHome:() -> Unit = {},
     modifier: Modifier = Modifier
 ) {
 
     val logo = painterResource(R.drawable.logo)
-    var emailText = remember { mutableStateOf("") }
-    var passwordText = remember { mutableStateOf("") }
+
+    val loginState by viewModel.authState.collectAsState()
 
 
     Column(
@@ -80,14 +85,93 @@ fun LoginScreen(
         Text("Login with your Page account", color = Color.Gray, fontSize = 12.sp)
         Spacer(modifier = modifier.height(30.dp))
 
-        InputField(iconVector = Icons.Default.Email, textFieldContent = emailText, fieldLabel = "Email", valid = true)
-        InputField(iconVector = Icons.Default.Lock, textFieldContent = passwordText, fieldLabel = "Password", valid = true)
+//        InputField(
+//            iconVector = Icons.Default.Email,
+//            textFieldContent = loginState.email,
+//            fieldLabel = "Email",
+//            valid = true
+//        )
+//        InputField(
+//            iconVector = Icons.Default.Lock,
+//            textFieldContent = loginState.password,
+//            fieldLabel = "Password",
+//            valid = true
+//        )
+
+        Row ( // Custom Field
+            modifier = modifier.fillMaxWidth()
+        ){
+            Column(
+                modifier = modifier
+            ) {
+                TextField(
+                    value = loginState.email,
+//                onValueChange = { textFieldContent.value = it },
+                    onValueChange = { /*TODO*/ },
+
+                    label = { Text("Email") },
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Email, contentDescription = "Field Icon")
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Background2,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        unfocusedLeadingIconColor = Color.Gray,
+                        focusedLeadingIconColor = Color.Gray,
+                        focusedTextColor = Color.Gray,
+                        unfocusedTextColor = Color.Gray,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent
+                    ),
+                    shape = RoundedCornerShape(9.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    modifier = modifier
+                        .fillMaxWidth()
+                )
+            }
+        } // End of Custom Field
+        Spacer(modifier = modifier.height(10.dp))
+        Row ( // Custom Field
+            modifier = modifier.fillMaxWidth()
+        ){
+            Column(
+                modifier = modifier
+            ) {
+                TextField(
+                    value = loginState.password,
+//                onValueChange = { textFieldContent.value = it },
+                    onValueChange = { /*TODO*/ },
+
+                    label = { Text("Password") },
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Default.Lock, contentDescription = "Field Icon")
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Background2,
+                        focusedLabelColor = Color.Gray,
+                        unfocusedLabelColor = Color.Gray,
+                        unfocusedLeadingIconColor = Color.Gray,
+                        focusedLeadingIconColor = Color.Gray,
+                        focusedTextColor = Color.Gray,
+                        unfocusedTextColor = Color.Gray,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent
+                    ),
+                    shape = RoundedCornerShape(9.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    modifier = modifier
+                        .fillMaxWidth()
+                )
+            }
+        } // End of Custom Field
+        Spacer(modifier = modifier.height(10.dp))
 
         Row( // Button
             modifier = modifier.fillMaxWidth()
         ) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { navigateToHome.invoke() },
                 modifier = modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors( //From docs*
                     containerColor = Background3
@@ -104,7 +188,7 @@ fun LoginScreen(
             horizontalArrangement = Arrangement.End,
             modifier = modifier.fillMaxWidth()
         ){
-            TextButton(onClick = { navigateToRegister.invoke() }) {
+            TextButton(onClick = { viewModel.login() }) {
                 Text("Create a New Account Here!", color = Background3, fontSize = 12.sp)
             }
         }
@@ -148,7 +232,8 @@ fun InputField(
             }
             TextField(
                 value = textFieldContent.value,
-                onValueChange = { textFieldContent.value = it },
+//                onValueChange = { textFieldContent.value = it },
+                onValueChange = { /*TODO*/ },
 
                 label = { Text(fieldLabel) },
                 leadingIcon = {

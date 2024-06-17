@@ -112,8 +112,8 @@ fun ChatScreen(
 
             Message(text="Hi there!")
             Reply(text="Hi!")
-            Message(text="hi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi agahi again!hi again!hi again!hi again!hi again!hi again!hi again!hi again!hi again!")
-            Reply(text="dsfklsdjsdkfsdkfsdfsdfhsdjhfshfhsjdfhsjdhfjsdhfdjshfsjhfjsdfhdsjfhsdfhjsdhfjhfjshfjsdhfdhfjshfhjsdhfjdshfjdshfdjshfsdjh")
+            Message(text="How are you?")
+            Reply(text="I'm good! Did you catch last night's Rugby match?")
 
 
 

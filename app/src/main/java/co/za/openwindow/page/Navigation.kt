@@ -12,6 +12,7 @@ import co.za.openwindow.page.screens.AllChatsScreen
 import co.za.openwindow.page.screens.LoginScreen
 import co.za.openwindow.page.screens.RegisterScreen
 import co.za.openwindow.page.screens.ChatScreen
+import co.za.openwindow.page.viewmodels.AuthViewModel
 
 
 //DEFINE ALL MY NAV LINKS
@@ -30,6 +31,7 @@ object HomeRoutes { //when user has logged in
 // Manage all Navigation
 @Composable
 fun Navigation(
+    authViewModel: AuthViewModel,
     navController : NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
 ){
@@ -37,8 +39,14 @@ fun Navigation(
 
     //TODO: Add functionality to check which route to start with
 
+    val startingScreen = if (authViewModel.userState){
+        HomeRoutes.allChatsScreen
+    } else {
+        AuthRoutes.loginScreen
+    }
+
     //Router - where we define all of our composable nav routes
-    NavHost(navController = navController, startDestination =AuthRoutes.loginScreen){
+    NavHost(navController = navController, startDestination =startingScreen){
 
         // DEFINE ALL OUT SCREENS THAT CAN BE NAVIGATED TO
 
@@ -47,12 +55,24 @@ fun Navigation(
             LoginScreen(
                 navigateToRegister = {
                     navController.navigate(AuthRoutes.registerScreen)
+                },
+                navigateToHome = {
+                    navController.navigate(HomeRoutes.allChatsScreen){
+                        launchSingleTop = true
+                        popUpTo(route = AuthRoutes.loginScreen){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
 
         composable(route = AuthRoutes.registerScreen){
-            RegisterScreen()
+            RegisterScreen(
+                navigateToLogin = {
+                    navController.navigate(AuthRoutes.loginScreen)
+                }
+            )
         }
 
 
@@ -64,7 +84,11 @@ fun Navigation(
         }
 
         composable(route = HomeRoutes.allChatsScreen){
-            AllChatsScreen()
+            AllChatsScreen(
+                navigateToChat = {
+                    navController.navigate(HomeRoutes.chatScreen)
+                }
+            )
         }
 
     }

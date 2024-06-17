@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "251395348562",
+    "project_id": "android-expanded-test",
+    "storage_bucket": "android-expanded-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251395348562:android:60fb707bd28a5cfa64e78b",
+        "android_client_info": {
+          "package_name": "co.za.openwindow.page"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi6Hkk1hfzO8_5JhXGzJm9wt0kQDSxE2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
