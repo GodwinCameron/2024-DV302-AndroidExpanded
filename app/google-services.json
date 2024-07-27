@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "973931598585",
-    "project_id": "android-expanded",
-    "storage_bucket": "android-expanded.appspot.com"
+    "project_number": "319903754194",
+    "project_id": "page-android",
+    "storage_bucket": "page-android.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:973931598585:android:fdc5453c3540bcf01e0828",
+        "mobilesdk_app_id": "1:319903754194:android:3da115ba608b024d12ca0b",
         "android_client_info": {
           "package_name": "co.za.openwindow.page"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCBX5HWEhMqIHkgCuqyzI8YuriE9ZL9XLQ"
+          "current_key": "AIzaSyBkYPHXDBDnN2LmmoMKMTg4lt-m8iAnsus"
         }
       ],
       "services": {

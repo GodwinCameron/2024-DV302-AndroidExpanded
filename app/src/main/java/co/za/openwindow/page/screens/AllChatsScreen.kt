@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,6 +43,7 @@ import co.za.openwindow.page.models.Chat
 fun AllChatsScreen(
     viewModel: ChatViewModel = viewModel(),
     navigateToChat:() -> Unit = {},
+    navigateToProfile:() -> Unit = {},
     modifier: Modifier = Modifier
 ){
 
@@ -76,8 +78,13 @@ fun AllChatsScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Row() {
                     Spacer(modifier = Modifier.width(16.dp))
-                    ProfileIcon()
-                    ProfileIcon()
+                    Button(onClick = { navigateToProfile.invoke() },
+                        colors = ButtonDefaults.buttonColors( //From docs*
+                            containerColor = Background2
+                        ),) {
+                        ProfileIcon()
+                    }
+
                 }
             }
         } // End of Top
@@ -138,7 +145,13 @@ fun AllChatsScreen(
                     )
                 }
                 Spacer(modifier = Modifier.width(15.dp))
-                Text("Last chat message", color = Color.White)
+                Column(
+                    modifier = Modifier
+                ) {
+                    Text("Chadman", color = Color.White)
+                    Text("Where did you put the leftovers?", color = Color.Gray, fontSize = 10.sp)
+                }
+                Spacer(modifier = Modifier.width(15.dp))
                 Button(onClick = { navigateToChat.invoke()  }) {
                     Text("To chat")
                 }
@@ -164,7 +177,13 @@ fun AllChatsScreen(
                     )
                 }
                 Spacer(modifier = Modifier.width(15.dp))
-                Text("Last chat message", color = Color.White)
+                Column(
+                    modifier = Modifier
+                ) {
+                    Text("Merrymei", color = Color.White)
+                    Text("Aah! I loved that movie, hope so.", color = Color.Gray, fontSize = 10.sp)
+                }
+                Spacer(modifier = Modifier.width(15.dp))
                 Button(onClick = { navigateToChat.invoke()  }) {
                     Text("To chat")
                 }

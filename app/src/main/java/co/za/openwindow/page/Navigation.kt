@@ -12,6 +12,7 @@ import co.za.openwindow.page.screens.AllChatsScreen
 import co.za.openwindow.page.screens.LoginScreen
 import co.za.openwindow.page.screens.RegisterScreen
 import co.za.openwindow.page.screens.ChatScreen
+import co.za.openwindow.page.screens.ProfileScreen
 import co.za.openwindow.page.viewmodels.AuthViewModel
 
 
@@ -24,6 +25,7 @@ object AuthRoutes { //if user is not logged in
 object HomeRoutes { //when user has logged in
     const val chatScreen = "chat"
     const val allChatsScreen = "all chats"
+    const val profileScreen = "profile"
 //    TODO: Other screens
 }
 
@@ -71,6 +73,14 @@ fun Navigation(
             RegisterScreen(
                 navigateToLogin = {
                     navController.navigate(AuthRoutes.loginScreen)
+                },
+                navigateToHome = {
+                    navController.navigate(HomeRoutes.allChatsScreen){
+                        launchSingleTop = true
+                        popUpTo(route = AuthRoutes.loginScreen){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -80,13 +90,36 @@ fun Navigation(
 
         //Home Screens
         composable(route = HomeRoutes.chatScreen){
-            ChatScreen()
+            ChatScreen(
+                navigateToHome = {
+                    navController.navigate(HomeRoutes.allChatsScreen){
+                        launchSingleTop = true
+                        popUpTo(route = AuthRoutes.loginScreen){
+                            inclusive = true
+                        }
+                    }
+                }
+            )
         }
 
         composable(route = HomeRoutes.allChatsScreen){
             AllChatsScreen(
                 navigateToChat = {
                     navController.navigate(HomeRoutes.chatScreen)
+                },
+                navigateToProfile = {
+                    navController.navigate(HomeRoutes.profileScreen)
+                }
+            )
+        }
+
+        composable(route = HomeRoutes.profileScreen){
+            ProfileScreen(
+                navigateToLogin = {
+                    navController.navigate(AuthRoutes.loginScreen)
+                },
+                navigateToAllChats = {
+                    navController.navigate(HomeRoutes.allChatsScreen)
                 }
             )
         }

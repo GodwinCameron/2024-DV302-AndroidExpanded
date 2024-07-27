@@ -11,15 +11,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-
-//Repository - viewModels connection to our firebase - communication with backend
+// COMMUNICATION REPOSITORY FOR FIREBASE.
 class AuthRepository {
 
-    // Firebase functionality
 
+    // FIREBASE FUNCTIONALITY:
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    //check logged in users info
+    //LOGGED IN USER'S INFO:
     val currentUser: FirebaseUser? = Firebase.auth.currentUser // <-- get the auth user info
     fun hasUser(): Boolean = Firebase.auth.currentUser != null // <-- check if there is a user
     fun getUserId(): String = Firebase.auth.currentUser?.uid.orEmpty() // <-- get the user id
@@ -27,7 +26,7 @@ class AuthRepository {
     //Log user out of firebase
     fun logOff(){
         Firebase.auth.signOut()
-        Log.d("AAA Current User", "log off success")
+        Log.d("CCC Current User", "log off success")
     }
 
     //TODO: register a new user
@@ -69,26 +68,24 @@ class AuthRepository {
                 }
             }.await()
     }
-    //TODO: login an existing user
+
+    //LOGIN USER:
     suspend fun loginUser(
         email: String,
         password: String,
-        isCompleted: (Boolean) -> Unit //callback function to send true/false back depending on success
-    ) = withContext(Dispatchers.IO){ // Like an async/await function
+        isCompleted: (Boolean) -> Unit //<- Callback for if login was successful or not
+    ) = withContext(Dispatchers.IO){ // <- Like an async/await function
 
         Firebase.auth
-//            .createUserWithEmailAndPassword()  <-- Registration
             .signInWithEmailAndPassword(email, password)
             .addOnCompleteListener{
                 if(it.isSuccessful){
-                    Log.d("AAA Login State: ", "login successful")
-                    isCompleted.invoke(true)
+                    Log.d("CCC Login listener: ", "login successful")
+                    isCompleted.invoke(true) //<- COULD LOG USER IN
                 } else {
-                    Log.d("AAA Login State: ", it.exception?.localizedMessage.toString())
-                    isCompleted.invoke(false)
+                    Log.d("CCC Login listener: Could not log in user, error: ", it.exception?.localizedMessage.toString())
+                    isCompleted.invoke(false) //<- COULD NOT LOG USER IN
                 }
             }.await()
     }
-
-
 }

@@ -58,6 +58,7 @@ import co.za.openwindow.page.ui.theme.PageTheme
 @Composable
 fun ProfileScreen(
     navigateToAllChats:() -> Unit = {},
+    navigateToLogin:() -> Unit = {},
     modifier: Modifier = Modifier
 ) {
 
@@ -84,7 +85,7 @@ fun ProfileScreen(
             )
             Spacer(modifier = modifier.width(190.dp))
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { navigateToLogin.invoke() },
                 colors = ButtonDefaults.buttonColors( //From docs*
                     containerColor = Background3
                 ),
@@ -114,7 +115,7 @@ fun ProfileScreen(
         Row(
             modifier = modifier.fillMaxWidth()
         ){
-            Text("Username", color = MessageTextColor)
+            Text("Cameron", color = MessageTextColor)
             Spacer(modifier = modifier.width(10.dp))
             Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Icon", tint = MessageTextColor)
         }
@@ -124,7 +125,7 @@ fun ProfileScreen(
         Row(
             modifier = modifier.fillMaxWidth()
         ){
-            Text("Email", color = MessageTextColor)
+            Text("cameron@test.com", color = MessageTextColor)
             Spacer(modifier = modifier.width(10.dp))
             Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Icon", tint = MessageTextColor)
         }

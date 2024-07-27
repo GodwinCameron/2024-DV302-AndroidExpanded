@@ -11,16 +11,24 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-//ViewModel is the logic of our views (performs the functionality)
+//THIS VIEWMODEL MANAGES FUNCTIONALITY FROM THE LOGIN VIEW WITHOUT MIXING LOGIC AND FRONTEND FOR CLEANER CODING.
+
+//LOGIN VIEW LOGIC HERE (NEATENS VIEWS BY SPLITTING FUNCTIONALITY FROM FRONTEND):
 class LoginViewModel(private val authRepository: AuthRepository = AuthRepository()): ViewModel() {
 
-    private val _authState = MutableStateFlow(AuthUiState())//private so that only this view model can change values
-    val authState: StateFlow<AuthUiState> = _authState // variable we use in the view
+    //WITH A STATE FLOW CONNECTION, USING PRIVATE VALUES HELPS US MAINTAIN CONTROL OVER VALUES THAT
+    //ARE PRESENT IN BOTH THE VIEW AND VIEWMODEL, BUT THAT WE WANT TO LIMIT CHANGING HERE (IN THE
+    //LOGIC) AND NOT INTERFERE WITH THE DATA THAT EXISTS IN THE VIEW ITSELF.
 
 
+    //PRIVATE SO THAT ONLY THIS FILE CAN CHANGE THIS VALUE, SHOWN WITH THE UNDERSCORE '_'
+    private val _authState = MutableStateFlow(AuthUiState())
 
+    //VALUE THAT GETS USED IN THE VIEW, NOW LINKED THROUGH STATEFLOW:
+    val authState: StateFlow<AuthUiState> = _authState
 
-    fun handleInputStateChanges(target: String, changedValue: String) { // <-- Target = which state we want to change
+    //HANDLES THE INPUT FIELDS' STATE VALUES, TARGET IS A STRING SINCE WE ENTER IT IN WITH KEYBOARD
+    fun handleInputStateChanges(target: String, changedValue: String) {
         _authState.update { currentState ->
             when(target){
                 "email" -> currentState.copy(email = changedValue)
@@ -30,24 +38,29 @@ class LoginViewModel(private val authRepository: AuthRepository = AuthRepository
         }
     }
 
-    //access to the email and password that the user typed in the VIEW
+    //LOGIN FUNCTION OF THE VIEW: (REQUIRES ACCESS TO FIELDS)
     fun login(){
 
-        viewModelScope.launch { // for Async/Await functionality
-            // if email and/or password is blank - error message = add email/password
+        //ASYNC AWAIT FUNCTIONALITY
+        viewModelScope.launch {
+
+            //CHECKS FOR EMPTY INPUT FIELDS:
             try {
+                //UTILIZES STATE FLOW CONNECTION TO LINK VIEWMODEL TO VIEW:
                 authRepository.loginUser(_authState.value.email, _authState.value.password) {isCompleted ->
+
+                    //'isCompleted' REPRESENTS A SUCCESSFUL LOGIN:
                     if (isCompleted) {
-                        Log.d("AAA Current User", Firebase.auth.currentUser?.email.toString())
+                        Log.d("CCC Current User: ", Firebase.auth.currentUser?.email.toString())
                         _authState.value = AuthUiState(error = "", success = true)
                         //IF Register -> Create new user in DB
                     } else {
-                        Log.d("AAA Error Logging in user: ", "Something went wrong")
+                        Log.d("CCC Error Logging in user: ", "Something went wrong")
                         _authState.value = AuthUiState(error = "Something went wrong", success = false)
                     }
                 }
             } catch(e:Exception){
-                Log.d("AAA Error:", e.localizedMessage.toString())
+                Log.d("CCC Error:", e.localizedMessage.toString())
                 _authState.value = AuthUiState(error = e.localizedMessage.toString(), success = false)
             }
         }
@@ -55,10 +68,10 @@ class LoginViewModel(private val authRepository: AuthRepository = AuthRepository
     }
 }
 
-//Create a data class - represents all the variables in view
+//DATA CLASS REPRESENTING ALL DATA ON VIEW FOR THE STATE FLOW CONNECTION:
 data class AuthUiState (
     val email: String = "cameron@test.com",
-    val password: String = "123456", // 6 character minimum for FireStore
+    val password: String = "abcdef", // <- FIRESTORE REQUIRES A 6 CHARACTER MIN PASSWORD.
     val success: Boolean = false,
     val error: String = ""
 )

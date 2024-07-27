@@ -2,6 +2,7 @@ package co.za.openwindow.page.screens
 
 import android.media.Image
 import android.service.autofill.OnClickAction
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -53,19 +54,46 @@ import co.za.openwindow.page.ui.theme.Background3
 import co.za.openwindow.page.ui.theme.MessageTextColor
 import co.za.openwindow.page.ui.theme.PageTheme
 import co.za.openwindow.page.viewmodels.LoginViewModel
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 
 @OptIn(ExperimentalMaterial3Api::class)
+
+
+//TESTING PURPOSES:
+//private lateinit var auth: FirebaseAuth
+
+
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = viewModel(),
-    navigateToRegister:() -> Unit = {},
-    navigateToHome:() -> Unit = {},
+    viewModel: LoginViewModel = viewModel(), //<- THIS IS OUR LOGIC AND FUNCTIONALITY FILE.
+    navigateToRegister:() -> Unit = {}, //<- NAVIGATION TO REGISTER VIEW.
+    navigateToHome:() -> Unit = {}, //<- NAVIGATION TO HOME VIEW.
     modifier: Modifier = Modifier
 ) {
 
+//    TEST FOR FIREBASE IMPLEMENTATION --- SUCCESS!!!
+//    =========================================================================================
+    // Initialize Firebase Auth
+//    auth = Firebase.auth
+//    // Check if user is signed in (non-null) and update UI accordingly.
+//    val currentUser = auth.currentUser
+//    if (currentUser != null)
+//    {
+//        Log.d("CCC Current User:", currentUser.email.toString())
+//    } else
+//    {
+//        Log.d("CCC Current User:", "NONE")
+//    }
+//    =========================================================================================
+
+
+
     val logo = painterResource(R.drawable.logo)
 
+    //VALUE USED FOR STATEFLOW OBJECT IN VIEWMODEL (LOGIC) FILE.
     val loginState by viewModel.authState.collectAsState()
 
 
@@ -84,20 +112,6 @@ fun LoginScreen(
         Spacer(modifier = modifier.height(50.dp))
         Text("Login with your Page account", color = Color.Gray, fontSize = 12.sp)
         Spacer(modifier = modifier.height(30.dp))
-
-//        InputField(
-//            iconVector = Icons.Default.Email,
-//            textFieldContent = loginState.email,
-//            fieldLabel = "Email",
-//            valid = true
-//        )
-//        InputField(
-//            iconVector = Icons.Default.Lock,
-//            textFieldContent = loginState.password,
-//            fieldLabel = "Password",
-//            valid = true
-//        )
-
         Row ( // Custom Field
             modifier = modifier.fillMaxWidth()
         ){
@@ -106,9 +120,7 @@ fun LoginScreen(
             ) {
                 TextField(
                     value = loginState.email,
-//                onValueChange = { textFieldContent.value = it },
                     onValueChange = { /*TODO*/ },
-
                     label = { Text("Email") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Email, contentDescription = "Field Icon")
@@ -140,9 +152,7 @@ fun LoginScreen(
             ) {
                 TextField(
                     value = loginState.password,
-//                onValueChange = { textFieldContent.value = it },
                     onValueChange = { /*TODO*/ },
-
                     label = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Field Icon")
@@ -171,7 +181,7 @@ fun LoginScreen(
             modifier = modifier.fillMaxWidth()
         ) {
             Button(
-                onClick = { navigateToHome.invoke() },
+                onClick = { viewModel.login() },
                 modifier = modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors( //From docs*
                     containerColor = Background3
@@ -188,7 +198,7 @@ fun LoginScreen(
             horizontalArrangement = Arrangement.End,
             modifier = modifier.fillMaxWidth()
         ){
-            TextButton(onClick = { viewModel.login() }) {
+            TextButton(onClick = { navigateToRegister.invoke() }) {
                 Text("Create a New Account Here!", color = Background3, fontSize = 12.sp)
             }
         }
@@ -232,7 +242,6 @@ fun InputField(
             }
             TextField(
                 value = textFieldContent.value,
-//                onValueChange = { textFieldContent.value = it },
                 onValueChange = { /*TODO*/ },
 
                 label = { Text(fieldLabel) },

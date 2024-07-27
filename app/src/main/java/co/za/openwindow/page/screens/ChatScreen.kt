@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,6 +44,7 @@ import co.za.openwindow.page.ui.theme.Purple80
 
 @Composable
 fun ChatScreen(
+    navigateToHome:() -> Unit = {},
     modifier: Modifier = Modifier
 ){
 
@@ -69,10 +72,16 @@ fun ChatScreen(
                 .height(95.dp)
                 .padding(10.dp) // Styling
         ){
-            Image(
-                painter = backButtonIcon,
-                contentDescription = "Back Button Icon"
-            )
+            Button(onClick = { navigateToHome.invoke() },
+                    colors = ButtonDefaults.buttonColors( //From docs*
+                    containerColor = Background2
+                    ),) {
+                Image(
+                    painter = backButtonIcon,
+                    contentDescription = "Back Button Icon"
+                )
+            }
+
             Spacer(modifier = Modifier.width(16.dp))
             Box(
                 contentAlignment = Alignment.Center,
@@ -89,7 +98,7 @@ fun ChatScreen(
             }
             Spacer(modifier = Modifier.width(24.dp))
             Text(
-                text = "Hugh Mongus",
+                text = "Chadman",
                 color = Color.White,
                 fontSize = 18.sp
             )
@@ -114,6 +123,8 @@ fun ChatScreen(
             Reply(text="Hi!")
             Message(text="How are you?")
             Reply(text="I'm good! Did you catch last night's Rugby match?")
+            Message(text="I did...")
+            Message(text="Where did you put the leftovers?")
 
 
 

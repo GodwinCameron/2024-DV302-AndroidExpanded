@@ -54,6 +54,7 @@ import co.za.openwindow.page.ui.theme.PageTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
+    navigateToHome:() -> Unit = {},
     navigateToLogin:() -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -99,7 +100,7 @@ fun RegisterScreen(
             modifier = modifier.fillMaxWidth()
         ) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = { navigateToHome.invoke() },
                 modifier = modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Background3
