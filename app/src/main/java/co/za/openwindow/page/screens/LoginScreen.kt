@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -120,7 +121,7 @@ fun LoginScreen(
             ) {
                 TextField(
                     value = loginState.email,
-                    onValueChange = { /*TODO*/ },
+                    onValueChange = { viewModel.handleInputStateChanges("email", it) },
                     label = { Text("Email") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Email, contentDescription = "Field Icon")
@@ -152,7 +153,7 @@ fun LoginScreen(
             ) {
                 TextField(
                     value = loginState.password,
-                    onValueChange = { /*TODO*/ },
+                    onValueChange = { viewModel.handleInputStateChanges("password", it) },
                     label = { Text("Password") },
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Lock, contentDescription = "Field Icon")
@@ -169,13 +170,23 @@ fun LoginScreen(
                         focusedIndicatorColor = Color.Transparent
                     ),
                     shape = RoundedCornerShape(9.dp),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     modifier = modifier
                         .fillMaxWidth()
                 )
             }
         } // End of Custom Field
         Spacer(modifier = modifier.height(10.dp))
+
+        if(loginState.error.isNotBlank())
+        {
+            Text(
+                text = loginState.error,
+                color = Color.Red,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = modifier.height(10.dp))
+        }
 
         Row( // Button
             modifier = modifier.fillMaxWidth()
@@ -203,6 +214,9 @@ fun LoginScreen(
             }
         }
 
+        if(loginState.success){
+            navigateToHome.invoke()
+        }
 
     }
 }
@@ -221,8 +235,10 @@ fun LoginScreenPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InputField(
+    viewModel: LoginViewModel = viewModel(),
     iconVector: ImageVector,
     textFieldContent: MutableState<String>,
+    target: MutableState<String>,
     fieldLabel: String,
     valid: Boolean,
     modifier: Modifier = Modifier,
@@ -242,7 +258,7 @@ fun InputField(
             }
             TextField(
                 value = textFieldContent.value,
-                onValueChange = { /*TODO*/ },
+                onValueChange = { viewModel.handleInputStateChanges(target.value, it) },
 
                 label = { Text(fieldLabel) },
                 leadingIcon = {

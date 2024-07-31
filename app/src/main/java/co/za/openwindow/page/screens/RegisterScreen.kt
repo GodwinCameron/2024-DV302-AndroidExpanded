@@ -31,6 +31,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,17 +44,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.za.openwindow.page.R
 import co.za.openwindow.page.ui.theme.Background1
 import co.za.openwindow.page.ui.theme.Background2
 import co.za.openwindow.page.ui.theme.Background3
 import co.za.openwindow.page.ui.theme.MessageTextColor
 import co.za.openwindow.page.ui.theme.PageTheme
+import co.za.openwindow.page.viewmodels.LoginViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
+    viewModel: LoginViewModel = viewModel(),
     navigateToHome:() -> Unit = {},
     navigateToLogin:() -> Unit = {},
     modifier: Modifier = Modifier
@@ -64,6 +68,8 @@ fun RegisterScreen(
     var usernameText = remember { mutableStateOf("") }
     var passwordText = remember { mutableStateOf("") }
     var passwordCheckText = remember { mutableStateOf("") }
+
+    val loginState by viewModel.newAuthState.collectAsState()
 
 
     Column(
@@ -89,18 +95,89 @@ fun RegisterScreen(
 
 
 
+        TextField(
+            value = loginState.username,
+            onValueChange = { viewModel.handleNewUserInputStateChanges("username", it) },
+            label = { Text("Username") },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Person, contentDescription = "Field Icon")
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Background2,
+                focusedLabelColor = Color.Gray,
+                unfocusedLabelColor = Color.Gray,
+                unfocusedLeadingIconColor = Color.Gray,
+                focusedLeadingIconColor = Color.Gray,
+                focusedTextColor = Color.Gray,
+                unfocusedTextColor = Color.Gray,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(9.dp),
+            modifier = modifier
+                .fillMaxWidth()
+        )
+        Spacer(modifier = modifier.height(10.dp))
+        TextField(
+            value = loginState.email,
+            onValueChange = { viewModel.handleNewUserInputStateChanges("email", it) },
+            label = { Text("Email") },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Email, contentDescription = "Field Icon")
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Background2,
+                focusedLabelColor = Color.Gray,
+                unfocusedLabelColor = Color.Gray,
+                unfocusedLeadingIconColor = Color.Gray,
+                focusedLeadingIconColor = Color.Gray,
+                focusedTextColor = Color.Gray,
+                unfocusedTextColor = Color.Gray,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(9.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            modifier = modifier
+                .fillMaxWidth()
+        )
+        Spacer(modifier = modifier.height(10.dp))
+        TextField(
+            value = loginState.password,
+            onValueChange = { viewModel.handleNewUserInputStateChanges("password", it) },
+            label = { Text("Password") },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Lock, contentDescription = "Field Icon")
+            },
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Background2,
+                focusedLabelColor = Color.Gray,
+                unfocusedLabelColor = Color.Gray,
+                unfocusedLeadingIconColor = Color.Gray,
+                focusedLeadingIconColor = Color.Gray,
+                focusedTextColor = Color.Gray,
+                unfocusedTextColor = Color.Gray,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(9.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            modifier = modifier
+                .fillMaxWidth()
+        )
+        Spacer(modifier = modifier.height(10.dp))
 
-        InputField(iconVector = Icons.Default.Email, textFieldContent = emailText, fieldLabel = "Your Email", valid = true)
-        InputField(iconVector = Icons.Default.Person, textFieldContent = usernameText, fieldLabel = "Choose a Username", valid = false)
-        InputField(iconVector = Icons.Default.Lock, textFieldContent = passwordText, fieldLabel = "Choose a Password", valid = false)
-        InputField(iconVector = Icons.Default.Refresh, textFieldContent = passwordCheckText, fieldLabel = "Repeat your new Password", valid = false)
+//        InputField(iconVector = Icons.Default.Email, textFieldContent = emailText, fieldLabel = "Your Email", valid = true)
+//        InputField(iconVector = Icons.Default.Person, textFieldContent = usernameText, fieldLabel = "Choose a Username", valid = false)
+//        InputField(iconVector = Icons.Default.Lock, textFieldContent = passwordText, fieldLabel = "Choose a Password", valid = false)
+//        InputField(iconVector = Icons.Default.Refresh, textFieldContent = passwordCheckText, fieldLabel = "Repeat your new Password", valid = false)
 
 
         Row( // Button
             modifier = modifier.fillMaxWidth()
         ) {
             Button(
-                onClick = { navigateToHome.invoke() },
+                onClick = { viewModel.createUser() },
                 modifier = modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Background3
@@ -122,6 +199,9 @@ fun RegisterScreen(
             }
         }
 
+        if(loginState.success){
+            navigateToHome.invoke()
+        }
 
     }
 }

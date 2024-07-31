@@ -17,7 +17,7 @@ class ChatsRepository {
         onComplete: (List<Chat>?) -> Unit
     ) {
 
-        Log.d("AAA getting subjects...", "loading")
+        Log.d("AAA getting Chats...", "loading")
 
         var chats:ArrayList<Chat> = arrayListOf<Chat>()
         chatsCollection.get()

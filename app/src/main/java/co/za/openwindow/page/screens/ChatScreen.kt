@@ -44,6 +44,7 @@ import co.za.openwindow.page.ui.theme.Purple80
 
 @Composable
 fun ChatScreen(
+    chatId : String = "noId",
     navigateToHome:() -> Unit = {},
     modifier: Modifier = Modifier
 ){
@@ -121,6 +122,7 @@ fun ChatScreen(
 
             Message(text="Hi there!")
             Reply(text="Hi!")
+            Reply(text=chatId )
             Message(text="How are you?")
             Reply(text="I'm good! Did you catch last night's Rugby match?")
             Message(text="I did...")
@@ -196,16 +198,6 @@ fun ChatScreen(
 
     } // End of Parent Div
 } // ChatScreen Function
-
-@Preview(showBackground = true)
-@Composable
-fun ChatScreenPreview() {
-    PageTheme {
-        ChatScreen()
-    }
-}
-
-
 
 
 @Composable

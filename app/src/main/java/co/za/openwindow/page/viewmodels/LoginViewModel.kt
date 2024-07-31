@@ -23,14 +23,28 @@ class LoginViewModel(private val authRepository: AuthRepository = AuthRepository
 
     //PRIVATE SO THAT ONLY THIS FILE CAN CHANGE THIS VALUE, SHOWN WITH THE UNDERSCORE '_'
     private val _authState = MutableStateFlow(AuthUiState())
+    private val _newAuthState = MutableStateFlow(NewAuthUiState())
+
 
     //VALUE THAT GETS USED IN THE VIEW, NOW LINKED THROUGH STATEFLOW:
     val authState: StateFlow<AuthUiState> = _authState
+    val newAuthState: StateFlow<NewAuthUiState> = _newAuthState
 
     //HANDLES THE INPUT FIELDS' STATE VALUES, TARGET IS A STRING SINCE WE ENTER IT IN WITH KEYBOARD
     fun handleInputStateChanges(target: String, changedValue: String) {
         _authState.update { currentState ->
             when(target){
+                "email" -> currentState.copy(email = changedValue)
+                "password" -> currentState.copy(password = changedValue)
+                else -> currentState
+            }
+        }
+    }
+
+    fun handleNewUserInputStateChanges(target: String, changedValue: String) {
+        _newAuthState.update { currentState ->
+            when(target){
+                "username" -> currentState.copy(username = changedValue)
                 "email" -> currentState.copy(email = changedValue)
                 "password" -> currentState.copy(password = changedValue)
                 else -> currentState
@@ -66,12 +80,48 @@ class LoginViewModel(private val authRepository: AuthRepository = AuthRepository
         }
 
     }
+
+
+    //CREATE USER
+    fun createUser(){
+
+        //ASYNC AWAIT FUNCTIONALITY
+        viewModelScope.launch {
+
+            //CHECKS FOR EMPTY INPUT FIELDS:
+            try {
+                //UTILIZES STATE FLOW CONNECTION TO LINK VIEWMODEL TO VIEW:
+                authRepository.createNewAccount(_newAuthState.value.username,_newAuthState.value.email, _newAuthState.value.password) {isCompleted ->
+                    if (isCompleted) {
+                        Log.d("CCC Current User: ", Firebase.auth.currentUser?.email.toString())
+                        _newAuthState.value = NewAuthUiState(error = "", success = true)
+                        //IF Register -> Create new user in DB
+                    } else {
+                        Log.d("CCC Error Logging in user: ", "Something went wrong")
+                        _newAuthState.value = NewAuthUiState(error = "Something went wrong", success = false)
+                    }
+                }
+            } catch(e:Exception){
+                Log.d("CCC Error:", e.localizedMessage.toString())
+                _newAuthState.value = NewAuthUiState(error = e.localizedMessage.toString(), success = false)
+            }
+        }
+
+    }
 }
 
 //DATA CLASS REPRESENTING ALL DATA ON VIEW FOR THE STATE FLOW CONNECTION:
 data class AuthUiState (
-    val email: String = "cameron@test.com",
-    val password: String = "abcdef", // <- FIRESTORE REQUIRES A 6 CHARACTER MIN PASSWORD.
+    val email: String = "",
+    val password: String = "", // <- FIRESTORE REQUIRES A 6 CHARACTER MIN PASSWORD.
+    val success: Boolean = false,
+    val error: String = ""
+)
+
+data class NewAuthUiState (
+    val username: String = "",
+    val email: String = "",
+    val password: String = "", // <- FIRESTORE REQUIRES A 6 CHARACTER MIN PASSWORD.
     val success: Boolean = false,
     val error: String = ""
 )

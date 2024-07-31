@@ -4,9 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import co.za.openwindow.page.screens.AllChatsScreen
 
 import co.za.openwindow.page.screens.LoginScreen
@@ -52,7 +54,8 @@ fun Navigation(
 
         // DEFINE ALL OUT SCREENS THAT CAN BE NAVIGATED TO
 
-        //Auth Screens
+        //Auth Screens:
+        // LOGIN SCREEN
         composable(route = AuthRoutes.loginScreen){
             LoginScreen(
                 navigateToRegister = {
@@ -69,6 +72,7 @@ fun Navigation(
             )
         }
 
+        // REGISTER SCREEN
         composable(route = AuthRoutes.registerScreen){
             RegisterScreen(
                 navigateToLogin = {
@@ -77,7 +81,7 @@ fun Navigation(
                 navigateToHome = {
                     navController.navigate(HomeRoutes.allChatsScreen){
                         launchSingleTop = true
-                        popUpTo(route = AuthRoutes.loginScreen){
+                        popUpTo(route = AuthRoutes.registerScreen){
                             inclusive = true
                         }
                     }
@@ -88,9 +92,14 @@ fun Navigation(
 
 
 
-        //Home Screens
-        composable(route = HomeRoutes.chatScreen){
+        //Home Screens:
+        // CHAT SCREEN
+        composable(
+            route = "${HomeRoutes.chatScreen}/{chatId}",
+            arguments = listOf(navArgument("chatId") { type = NavType.StringType; defaultValue = "chat1" })
+        ) {
             ChatScreen(
+                chatId = it.arguments?.getString("chatId").toString(),
                 navigateToHome = {
                     navController.navigate(HomeRoutes.allChatsScreen){
                         launchSingleTop = true
@@ -102,10 +111,11 @@ fun Navigation(
             )
         }
 
+        // ALL CHATS SCREEN
         composable(route = HomeRoutes.allChatsScreen){
             AllChatsScreen(
                 navigateToChat = {
-                    navController.navigate(HomeRoutes.chatScreen)
+                    navController.navigate(route = "${HomeRoutes.chatScreen}/${it}")
                 },
                 navigateToProfile = {
                     navController.navigate(HomeRoutes.profileScreen)
@@ -113,18 +123,20 @@ fun Navigation(
             )
         }
 
+        // PROFILE SCREEN
         composable(route = HomeRoutes.profileScreen){
             ProfileScreen(
-                navigateToLogin = {
-                    navController.navigate(AuthRoutes.loginScreen)
-                },
-                navigateToAllChats = {
-                    navController.navigate(HomeRoutes.allChatsScreen)
+                logUserOff = {
+                    authViewModel.signUserOut()
+                    navController.navigate(AuthRoutes.loginScreen){
+                        launchSingleTop = true
+                        popUpTo(route = HomeRoutes.allChatsScreen){
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
 
     }
 }
-
-//@Preview here

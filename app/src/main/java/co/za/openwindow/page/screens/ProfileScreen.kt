@@ -59,6 +59,7 @@ import co.za.openwindow.page.ui.theme.PageTheme
 fun ProfileScreen(
     navigateToAllChats:() -> Unit = {},
     navigateToLogin:() -> Unit = {},
+    logUserOff: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
 
@@ -85,7 +86,7 @@ fun ProfileScreen(
             )
             Spacer(modifier = modifier.width(190.dp))
             Button(
-                onClick = { navigateToLogin.invoke() },
+                onClick = { logUserOff.invoke() },
                 colors = ButtonDefaults.buttonColors( //From docs*
                     containerColor = Background3
                 ),

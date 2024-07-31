@@ -2,6 +2,7 @@ package co.za.openwindow.page.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,11 +43,12 @@ import co.za.openwindow.page.models.Chat
 @Composable
 fun AllChatsScreen(
     viewModel: ChatViewModel = viewModel(),
-    navigateToChat:() -> Unit = {},
+    navigateToChat:(chatId: String) -> Unit = {},
     navigateToProfile:() -> Unit = {},
     modifier: Modifier = Modifier
 ){
 
+    //VALUE FOR DYNAMIC DATA
     val chats:List<Chat> = viewModel.chatList
 
 
@@ -99,10 +101,10 @@ fun AllChatsScreen(
             LazyColumn(
                 modifier = modifier.padding(10.dp)
             ) {
-                items(chats){
+                items(chats){chat ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = modifier
+                        modifier = modifier.clickable { navigateToChat.invoke(chat.id) }
                     ){
                         Box(
                             contentAlignment = Alignment.Center,
@@ -119,9 +121,6 @@ fun AllChatsScreen(
                         }
                         Spacer(modifier = Modifier.width(15.dp))
                         Text("Last chat message", color = Color.White)
-                        Button(onClick = { navigateToChat.invoke() }) {
-                            Text("To chat")
-                        }
                     }
                     Spacer(modifier = modifier.height(15.dp))
                 }
@@ -152,9 +151,6 @@ fun AllChatsScreen(
                     Text("Where did you put the leftovers?", color = Color.Gray, fontSize = 10.sp)
                 }
                 Spacer(modifier = Modifier.width(15.dp))
-                Button(onClick = { navigateToChat.invoke()  }) {
-                    Text("To chat")
-                }
             }
 
             Spacer(modifier = modifier.height(15.dp))
@@ -184,9 +180,6 @@ fun AllChatsScreen(
                     Text("Aah! I loved that movie, hope so.", color = Color.Gray, fontSize = 10.sp)
                 }
                 Spacer(modifier = Modifier.width(15.dp))
-                Button(onClick = { navigateToChat.invoke()  }) {
-                    Text("To chat")
-                }
             }
 
         } // End of User Chats Area
