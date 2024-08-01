@@ -120,66 +120,13 @@ fun AllChatsScreen(
                             )
                         }
                         Spacer(modifier = Modifier.width(15.dp))
-                        Text("Last chat message", color = Color.White)
+                        Column {
+                            Text(chat.name, color = Color.White)
+                            Text("Last message - date.", color = Color.Gray, fontSize = 10.sp)
+                        }
                     }
                     Spacer(modifier = modifier.height(15.dp))
                 }
-            }
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier
-            ){
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(50))
-
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(45.dp)
-                            .background(color = Background2, shape = RoundedCornerShape(50))
-                    )
-                }
-                Spacer(modifier = Modifier.width(15.dp))
-                Column(
-                    modifier = Modifier
-                ) {
-                    Text("Chadman", color = Color.White)
-                    Text("Where did you put the leftovers?", color = Color.Gray, fontSize = 10.sp)
-                }
-                Spacer(modifier = Modifier.width(15.dp))
-            }
-
-            Spacer(modifier = modifier.height(15.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = modifier
-            ){
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .background(color = Color.White, shape = RoundedCornerShape(50))
-
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(45.dp)
-                            .background(color = Background2, shape = RoundedCornerShape(50))
-                    )
-                }
-                Spacer(modifier = Modifier.width(15.dp))
-                Column(
-                    modifier = Modifier
-                ) {
-                    Text("Merrymei", color = Color.White)
-                    Text("Aah! I loved that movie, hope so.", color = Color.Gray, fontSize = 10.sp)
-                }
-                Spacer(modifier = Modifier.width(15.dp))
             }
 
         } // End of User Chats Area

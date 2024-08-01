@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -28,7 +30,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import co.za.openwindow.page.R
+import co.za.openwindow.page.models.Message
 import co.za.openwindow.page.ui.theme.Background1
 import co.za.openwindow.page.ui.theme.Background2
 import co.za.openwindow.page.ui.theme.Background3
@@ -41,11 +46,13 @@ import co.za.openwindow.page.ui.theme.MessageTextColor
 import co.za.openwindow.page.ui.theme.PageTheme
 import co.za.openwindow.page.ui.theme.PagedResponseBlock
 import co.za.openwindow.page.ui.theme.Purple80
+import co.za.openwindow.page.viewmodels.MessageViewModel
 
 @Composable
 fun ChatScreen(
     chatId : String = "noId",
     navigateToHome:() -> Unit = {},
+    viewModel: MessageViewModel = viewModel(),
     modifier: Modifier = Modifier
 ){
 
@@ -58,6 +65,8 @@ fun ChatScreen(
         bottomStart = 20.dp,
         bottomEnd = 20.dp
     )
+
+    val messageData:List<Message> = viewModel.messageList
 
     Column( // Parent Div
         modifier = modifier
@@ -120,13 +129,22 @@ fun ChatScreen(
 //
 //            Message(text = "Well then here is a new message.")
 
-            Message(text="Hi there!")
-            Reply(text="Hi!")
-            Reply(text=chatId )
-            Message(text="How are you?")
+//            co.za.openwindow.page.screens.Message(text="Hi there!")
+//            Reply(text="Hi!")
+//            Reply(text=chatId )
+//            co.za.openwindow.page.screens.Message(text="How are you?")
             Reply(text="I'm good! Did you catch last night's Rugby match?")
-            Message(text="I did...")
-            Message(text="Where did you put the leftovers?")
+//            co.za.openwindow.page.screens.Message(text="I did...")
+//            co.za.openwindow.page.screens.Message(text="Where did you put the leftovers?")
+
+            LazyColumn(
+                modifier = modifier.weight(1f)
+            ) {
+                items(messageData){ message ->
+                    co.za.openwindow.page.screens.Message(text = message.text)
+                }
+            }
+
 
 
 

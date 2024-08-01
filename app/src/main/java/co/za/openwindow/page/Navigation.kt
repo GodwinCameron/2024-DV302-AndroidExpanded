@@ -16,6 +16,8 @@ import co.za.openwindow.page.screens.RegisterScreen
 import co.za.openwindow.page.screens.ChatScreen
 import co.za.openwindow.page.screens.ProfileScreen
 import co.za.openwindow.page.viewmodels.AuthViewModel
+import co.za.openwindow.page.viewmodels.ChatViewModel
+import co.za.openwindow.page.viewmodels.MessageViewModel
 
 
 //DEFINE ALL MY NAV LINKS
@@ -100,6 +102,7 @@ fun Navigation(
         ) {
             ChatScreen(
                 chatId = it.arguments?.getString("chatId").toString(),
+                viewModel = MessageViewModel(chatId = it.arguments?.getString("chatId").toString()),
                 navigateToHome = {
                     navController.navigate(HomeRoutes.allChatsScreen){
                         launchSingleTop = true
